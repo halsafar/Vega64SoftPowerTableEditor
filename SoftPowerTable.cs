@@ -7,13 +7,17 @@ using System.Text.RegularExpressions;
 
 namespace Vega64SoftPowerTableEditor
 {
-
+    //
+    // "typedefs" for making it easier to copy paste the ATOM C Structs
 	using USHORT = UInt16;
 	using UCHAR = Byte;
 	using ULONG = UInt32;
 
 	public class SoftPowerTable
-	{		
+	{	
+        //
+        // ATOM Structs
+        //
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct ATOM_COMMON_TABLE_HEADER
 		{
@@ -159,6 +163,9 @@ namespace Vega64SoftPowerTableEditor
 			public USHORT usFanStartTemperature;
 		};
 
+        //
+        // PowerTable Members
+        //
 		public ATOM_POWERPLAY_TABLE atom_powerplay_table;
 
 		public ATOM_Vega10_State_Array atom_vega10_state_array;
@@ -177,13 +184,14 @@ namespace Vega64SoftPowerTableEditor
 
 		public ATOM_Vega10_Fan_Table atom_vega10_fan_table;
 
+        //
+        // Private Members
+        //
 		private static String STR_WIN_VER = "Windows Registry Editor Version";
-		private Regex REGEX_WIN_VER = new Regex("Windows Registry Editor Version (.*)", RegexOptions.IgnorePatternWhitespace);
-
 		private static String STR_PHM_PPT = "PP_PhmSoftPowerPlayTable";
 		private static String STR_HEX_START = "=hex:";
 
-		private int _totalSize = 0;
+        private byte[] _originalData = null;
 		private String _windowsRegistryVersion = null;
 		private List<int> _hexBlobNewLineIndices = new List<int>();
 
@@ -244,7 +252,7 @@ namespace Vega64SoftPowerTableEditor
 			hexData = Regex.Replace(hexData, @"\t|\n|\r|\s+|\\|,", "");
 
 			byte[] byteArray = StringToByteArray(hexData);
-			spt._totalSize = byteArray.Length;
+            spt._originalData = byteArray;
 
 			// parse main table
 			spt.atom_powerplay_table = fromBytes<ATOM_POWERPLAY_TABLE>(byteArray);
@@ -292,7 +300,10 @@ namespace Vega64SoftPowerTableEditor
 		/// </summary>
 		public void saveRegFile()
 		{
-			byte[] data = new byte[this._totalSize];
+            // clone the original data
+            byte[] data = this._originalData.ToArray();
+
+            // start replacing bytes appropriately
 			byte[] tmpBytes = getBytes<ATOM_POWERPLAY_TABLE>(this.atom_powerplay_table);
 			Array.Copy(tmpBytes, 0, data, 0, tmpBytes.Length);
 
@@ -307,6 +318,7 @@ namespace Vega64SoftPowerTableEditor
 				offset += Marshal.SizeOf(record);
 			}
 
+            // dump out hex string
 			string hex = BitConverter.ToString(data).Replace("-", String.Empty);
 			Console.WriteLine(hex);
 		}
