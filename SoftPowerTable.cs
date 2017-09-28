@@ -286,6 +286,25 @@ namespace Vega64SoftPowerTableEditor
 			return spt;
 		}
 
+		public void saveRegFile()
+		{
+			byte[] bytes = getBytes<ATOM_POWERPLAY_TABLE>(this.atom_powerplay_table);
+			string hex = BitConverter.ToString(bytes).Replace("-", String.Empty);
+			Console.WriteLine(hex);
+		}
+
+		static byte[] getBytes<T>(T obj)
+		{
+			int size = Marshal.SizeOf(obj);
+			byte[] arr = new byte[size];
+
+			IntPtr ptr = Marshal.AllocHGlobal(size);
+			Marshal.StructureToPtr(obj, ptr, true);
+			Marshal.Copy(ptr, arr, 0, size);
+			Marshal.FreeHGlobal(ptr);
+			return arr;
+		}
+
 		/// <summary>
 		/// Marshal the data from byte array
 		/// </summary>
