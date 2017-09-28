@@ -187,13 +187,15 @@ namespace Vega64SoftPowerTableEditor
         //
         // Private Members
         //
-		private static String STR_WIN_VER = "Windows Registry Editor Version";
-		private static String STR_PHM_PPT = "PP_PhmSoftPowerPlayTable";
+		//private static String STR_WIN_VER = "Windows Registry Editor Version";
+		//private static String STR_PHM_PPT = "PP_PhmSoftPowerPlayTable";
 		private static String STR_HEX_START = "=hex:";
 
         private byte[] _originalData = null;
-		private String _windowsRegistryVersion = null;
+        private string _originalText = null;
+
 		private List<int> _hexBlobNewLineIndices = new List<int>();
+        private int _hexStartIndex = 0;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:Vega64SoftPowerTableEditor.SoftPowerTable"/> class.
@@ -211,46 +213,22 @@ namespace Vega64SoftPowerTableEditor
 			SoftPowerTable spt = new SoftPowerTable();
 
 			// Parse out the hex data
-			StreamReader reader = File.OpenText("RX_VEGA_64_Soft_PP.reg");
-			string line;
-			String data = null;
-			String hexData = null;
-			while ((line = reader.ReadLine()) != null)
-			{
-				// Grab the Win ver just in case, probably the same for everyone.
-				if (line.Contains(STR_WIN_VER))
-				{
-					spt._windowsRegistryVersion = line;
-					Console.WriteLine(line);
-				}
+            spt._originalText = File.ReadAllText ("RX_VEGA_64_Soft_PP.reg");
+            spt._hexStartIndex = spt._originalText.IndexOf(STR_HEX_START, StringComparison.Ordinal) + STR_HEX_START.Length;
+            String hexData = spt._originalText.Substring(spt._hexStartIndex, spt._originalText.Length - spt._hexStartIndex);
 
-				// We found the spt definition
-				if (line.Contains(STR_PHM_PPT))
-				{
-					data = line + '\n';
-					data += reader.ReadToEnd();
-				}
-			}
+            // store newlines for later
+            for (int i = spt._hexStartIndex; i < spt._originalText.Length; i++)
+            {
+                if (spt._originalText[i] == '\n') {
+                    spt._hexBlobNewLineIndices.Add(i);
+                }
+            }
 
-			// parse the data, saving new lines for later reconstruction and grab hex blob
-			int start = data.IndexOf(STR_HEX_START, StringComparison.Ordinal) + STR_HEX_START.Length;
-			while (start <= data.Length)
-			{
-				int newlineIndex = data.IndexOf('\n', start);
-				if (newlineIndex == -1)
-				{
-					newlineIndex = data.Length;
-				}
-				hexData += data.Substring(start, newlineIndex-start);
+            // clean up the hex data
+            hexData = Regex.Replace(hexData, @"\t|\n|\r|\s+|\\|,", "");
 
-				spt._hexBlobNewLineIndices.Add(newlineIndex);
-
-				start = newlineIndex + 1;
-			}
-
-			// clean up the hex data
-			hexData = Regex.Replace(hexData, @"\t|\n|\r|\s+|\\|,", "");
-
+            // convert to byte array
 			byte[] byteArray = StringToByteArray(hexData);
             spt._originalData = byteArray;
 
@@ -288,9 +266,9 @@ namespace Vega64SoftPowerTableEditor
 			// parse fan table
 			spt.atom_vega10_fan_table = fromBytes<ATOM_Vega10_Fan_Table>(byteArray.Skip(spt.atom_powerplay_table.usFanTableOffset).ToArray());
 
-			// debug
-			Console.WriteLine(data);
-			Console.WriteLine(hexData);
+            // debug
+            Console.WriteLine(spt._originalText);
+            Console.WriteLine(hexData);
 
 			return spt;
 		}
@@ -320,7 +298,27 @@ namespace Vega64SoftPowerTableEditor
 
             // dump out hex string
 			string hex = BitConverter.ToString(data).Replace("-", String.Empty);
-			Console.WriteLine(hex);
+            Console.WriteLine(hex);
+
+            // add commas back in
+            hex = Regex.Replace(hex, ".{2}", "$0,");
+
+            // add new hex string to original file
+            string s = this._originalText;
+            s = s.Remove(this._hexStartIndex, s.Length - this._hexStartIndex);
+            s = s.Insert(this._hexStartIndex, hex);
+
+            // add new lines back in
+            foreach (int newlineIndex in this._hexBlobNewLineIndices) {
+                if (newlineIndex < s.Length) {
+                    s = s.Insert(newlineIndex-2, "\\\r\n  ");
+                }
+            }
+
+            // remove extra comma at end
+            s = s.Remove(s.Length - 1);
+
+            Console.WriteLine(s);
 		}
 
 		/// <summary>
@@ -341,6 +339,12 @@ namespace Vega64SoftPowerTableEditor
 			return arr;
 		}
 
+        static byte[] arrGetBytes<T>(List<T> obj)
+        {
+            byte[] retVal = null;
+
+            return retVal;
+        }
 
 		/// <summary>
 		/// Marshal the data from byte array
@@ -360,6 +364,14 @@ namespace Vega64SoftPowerTableEditor
 			return obj;
 		}
 
+        /// <summary>
+        /// Convert a continuous set of bytes into an array of objects.
+        /// </summary>
+        /// <returns>The from bytes.</returns>
+        /// <param name="arr">Arr.</param>
+        /// <param name="offset">Offset.</param>
+        /// <param name="entries">Entries.</param>
+        /// <typeparam name="T">The 1st type parameter.</typeparam>
 		static List<T> arrFromBytes<T>(byte[] arr, int offset, int entries)
 		{
 			List<T> retVal = new List<T>();
