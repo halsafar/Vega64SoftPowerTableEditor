@@ -267,7 +267,7 @@ namespace Vega64SoftPowerTableEditor
 
             // debug
             Console.WriteLine(spt._originalText);
-            Console.WriteLine(hexData);
+            //Console.WriteLine(hexData);
 
 			return spt;
 		}
@@ -293,7 +293,9 @@ namespace Vega64SoftPowerTableEditor
 
             // dump out hex string
 			string hex = BitConverter.ToString(data).Replace("-", String.Empty);
-            Console.WriteLine(hex);
+
+            Console.WriteLine("Old:" + ByteArrayToString(this._originalData));
+            Console.WriteLine("New:" + hex);
 
             // add commas back in
             hex = Regex.Replace(hex, ".{2}", "$0,");
@@ -312,8 +314,6 @@ namespace Vega64SoftPowerTableEditor
 
             // remove extra comma at end
             s = s.Remove(s.Length - 1);
-
-            Console.WriteLine(s);
 		}
 
 		/// <summary>
@@ -407,5 +407,16 @@ namespace Vega64SoftPowerTableEditor
 							 .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
 							 .ToArray();
 		}
+
+        /// <summary>
+        /// Bytes the array to string.
+        /// </summary>
+        /// <returns>The array to string.</returns>
+        /// <param name="ba">Ba.</param>
+        public static string ByteArrayToString(byte [] ba)
+        {
+            string hex = BitConverter.ToString(ba);
+            return hex.Replace("-", "");
+        }
 	}
 }

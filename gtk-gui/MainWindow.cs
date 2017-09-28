@@ -21,6 +21,12 @@ public partial class MainWindow
 
 	private global::Gtk.MenuBar menubar1;
 
+	private global::Gtk.ScrolledWindow GtkScrolledWindow;
+
+	private global::Gtk.Table table1;
+
+	private global::Gtk.VBox vbox_powerTable;
+
 	protected virtual void Build()
 	{
 		global::Stetic.Gui.Initialize(this);
@@ -63,6 +69,28 @@ public partial class MainWindow
 		w2.Position = 0;
 		w2.Expand = false;
 		w2.Fill = false;
+		// Container child vbox1.Gtk.Box+BoxChild
+		this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
+		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+		// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+		global::Gtk.Viewport w3 = new global::Gtk.Viewport();
+		w3.ShadowType = ((global::Gtk.ShadowType)(0));
+		// Container child GtkViewport.Gtk.Container+ContainerChild
+		this.table1 = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
+		this.table1.Name = "table1";
+		this.table1.RowSpacing = ((uint)(6));
+		this.table1.ColumnSpacing = ((uint)(6));
+		// Container child table1.Gtk.Table+TableChild
+		this.vbox_powerTable = new global::Gtk.VBox();
+		this.vbox_powerTable.Name = "vbox_powerTable";
+		this.vbox_powerTable.Spacing = 6;
+		this.table1.Add(this.vbox_powerTable);
+		w3.Add(this.table1);
+		this.GtkScrolledWindow.Add(w3);
+		this.vbox1.Add(this.GtkScrolledWindow);
+		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
+		w7.Position = 1;
 		this.Add(this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll();
