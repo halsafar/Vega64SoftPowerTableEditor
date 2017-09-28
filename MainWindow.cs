@@ -15,9 +15,6 @@ class ClampedBindedEntry: Gtk.Entry
 
         try {
             Console.WriteLine(type.GetField("MaxValue").GetValue(null));
-            //if (field != null && field.IsLiteral && !field.IsInitOnly) {
-            //    Console.WriteLine(field.GetRawConstantValue());
-            //}
         } catch (NullReferenceException e)
         {
             
@@ -59,7 +56,8 @@ public partial class MainWindow : Gtk.Window
             hbox.PackStart(e, false, false, 0);
 
             this.vbox_powerTable.PackStart(hbox, false, false, 0);
-            Console.WriteLine("{0} = {1}", field.Name, field.GetValue(this._spt.atom_powerplay_table));
+
+            //Console.WriteLine("{0} = {1}", field.Name, field.GetValue(this._spt.atom_powerplay_table));
         }
 
         this.ShowAll();

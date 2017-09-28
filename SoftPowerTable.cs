@@ -267,7 +267,6 @@ namespace Vega64SoftPowerTableEditor
 
             // debug
             Console.WriteLine(spt._originalText);
-            //Console.WriteLine(hexData);
 
 			return spt;
 		}
