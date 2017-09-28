@@ -8,8 +8,8 @@ public partial class MainWindow : Gtk.Window
     public MainWindow() : base(Gtk.WindowType.Toplevel)
     {
         Build();
-        this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.openRegFile();
-		this._spt.saveRegFile();
+        this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.OpenRegFile();
+		this._spt.SaveRegFile();
     }
 
     protected void OnDeleteEvent(object sender, DeleteEventArgs a)

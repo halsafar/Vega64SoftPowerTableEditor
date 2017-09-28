@@ -9,6 +9,7 @@ namespace Vega64SoftPowerTableEditor
 {
     //
     // "typedefs" for making it easier to copy paste the ATOM C Structs
+    //
 	using USHORT = UInt16;
 	using UCHAR = Byte;
 	using ULONG = UInt32;
@@ -187,8 +188,6 @@ namespace Vega64SoftPowerTableEditor
         //
         // Private Members
         //
-		//private static String STR_WIN_VER = "Windows Registry Editor Version";
-		//private static String STR_PHM_PPT = "PP_PhmSoftPowerPlayTable";
 		private static String STR_HEX_START = "=hex:";
 
         private byte[] _originalData = null;
@@ -208,7 +207,7 @@ namespace Vega64SoftPowerTableEditor
 		/// Opens the reg file.
 		/// </summary>
 		/// <returns>SoftPowerTable</returns>
-		public static SoftPowerTable openRegFile()
+		public static SoftPowerTable OpenRegFile()
 		{
 			SoftPowerTable spt = new SoftPowerTable();
 
@@ -233,38 +232,38 @@ namespace Vega64SoftPowerTableEditor
             spt._originalData = byteArray;
 
 			// parse main table
-			spt.atom_powerplay_table = fromBytes<ATOM_POWERPLAY_TABLE>(byteArray);
+			spt.atom_powerplay_table = FromBytes<ATOM_POWERPLAY_TABLE>(byteArray);
 
 			// parse state array
 			int offset = spt.atom_powerplay_table.usStateArrayOffset;
-			spt.atom_vega10_state_array = fromBytes<ATOM_Vega10_State_Array>(byteArray.Skip(offset).ToArray());
+			spt.atom_vega10_state_array = FromBytes<ATOM_Vega10_State_Array>(byteArray.Skip(offset).ToArray());
 
 			// parse gfx clk states (hurray!)
 			offset = spt.atom_powerplay_table.usGfxclkDependencyTableOffset;
-			spt.atom_vega10_gfxclk_table = fromBytes<ATOM_Vega10_GFXCLK_Dependency_Table>(byteArray.Skip(offset).ToArray());
+			spt.atom_vega10_gfxclk_table = FromBytes<ATOM_Vega10_GFXCLK_Dependency_Table>(byteArray.Skip(offset).ToArray());
 			offset += Marshal.SizeOf(spt.atom_vega10_gfxclk_table);
-			spt.atom_vega10_gfxclk_entries = arrFromBytes<ATOM_Vega10_GFXCLK_Dependency_Record>(byteArray, offset, spt.atom_vega10_gfxclk_table.ucNumEntries);
+			spt.atom_vega10_gfxclk_entries = ArrFromBytes<ATOM_Vega10_GFXCLK_Dependency_Record>(byteArray, offset, spt.atom_vega10_gfxclk_table.ucNumEntries);
 
 			// parse mem clk states
 			offset = spt.atom_powerplay_table.usMclkDependencyTableOffset;
-			spt.atom_vega10_memclk_table = fromBytes<ATOM_Vega10_MCLK_Dependency_Table>(byteArray.Skip(offset).ToArray());
+			spt.atom_vega10_memclk_table = FromBytes<ATOM_Vega10_MCLK_Dependency_Table>(byteArray.Skip(offset).ToArray());
 			offset += Marshal.SizeOf(spt.atom_vega10_memclk_table);
-			spt.atom_vega10_memclk_entries = arrFromBytes<ATOM_Vega10_MCLK_Dependency_Record>(byteArray, offset, spt.atom_vega10_memclk_table.ucNumEntries);
+			spt.atom_vega10_memclk_entries = ArrFromBytes<ATOM_Vega10_MCLK_Dependency_Record>(byteArray, offset, spt.atom_vega10_memclk_table.ucNumEntries);
 
 			// parse gfx voltages
 			offset = spt.atom_powerplay_table.usVddcLookupTableOffset;
-			spt.atom_vega10_gfxvdd_table = fromBytes<ATOM_Vega10_Voltage_Lookup_Table>(byteArray.Skip(offset).ToArray());
+			spt.atom_vega10_gfxvdd_table = FromBytes<ATOM_Vega10_Voltage_Lookup_Table>(byteArray.Skip(offset).ToArray());
 			offset += Marshal.SizeOf(spt.atom_vega10_gfxvdd_table);
-			spt.atom_vega10_gfxvdd_record = arrFromBytes<ATOM_Vega10_Voltage_Lookup_Record>(byteArray, offset, spt.atom_vega10_gfxvdd_table.ucNumEntries);
+			spt.atom_vega10_gfxvdd_record = ArrFromBytes<ATOM_Vega10_Voltage_Lookup_Record>(byteArray, offset, spt.atom_vega10_gfxvdd_table.ucNumEntries);
 
 			// parse mem voltages
 			offset = spt.atom_powerplay_table.usVddmemLookupTableOffset;
-			spt.atom_vega10_memvdd_table = fromBytes<ATOM_Vega10_Voltage_Lookup_Table>(byteArray.Skip(offset).ToArray());
+			spt.atom_vega10_memvdd_table = FromBytes<ATOM_Vega10_Voltage_Lookup_Table>(byteArray.Skip(offset).ToArray());
 			offset += Marshal.SizeOf(spt.atom_vega10_gfxvdd_table);
-			spt.atom_vega10_memvdd_record = arrFromBytes<ATOM_Vega10_Voltage_Lookup_Record>(byteArray, offset, spt.atom_vega10_memvdd_table.ucNumEntries);
+			spt.atom_vega10_memvdd_record = ArrFromBytes<ATOM_Vega10_Voltage_Lookup_Record>(byteArray, offset, spt.atom_vega10_memvdd_table.ucNumEntries);
 
 			// parse fan table
-			spt.atom_vega10_fan_table = fromBytes<ATOM_Vega10_Fan_Table>(byteArray.Skip(spt.atom_powerplay_table.usFanTableOffset).ToArray());
+			spt.atom_vega10_fan_table = FromBytes<ATOM_Vega10_Fan_Table>(byteArray.Skip(spt.atom_powerplay_table.usFanTableOffset).ToArray());
 
             // debug
             Console.WriteLine(spt._originalText);
@@ -276,20 +275,20 @@ namespace Vega64SoftPowerTableEditor
 		/// <summary>
 		/// Saves the reg file.
 		/// </summary>
-		public void saveRegFile()
+		public void SaveRegFile()
 		{
             // clone the original data
             byte[] data = this._originalData.ToArray();
 
             // start replacing bytes appropriately
-			byte[] tmpBytes = getBytes<ATOM_POWERPLAY_TABLE>(this.atom_powerplay_table);
+			byte[] tmpBytes = GetBytes<ATOM_POWERPLAY_TABLE>(this.atom_powerplay_table);
 			Array.Copy(tmpBytes, 0, data, 0, tmpBytes.Length);
 
-			tmpBytes = getBytes<ATOM_Vega10_GFXCLK_Dependency_Table>(this.atom_vega10_gfxclk_table);
+			tmpBytes = GetBytes<ATOM_Vega10_GFXCLK_Dependency_Table>(this.atom_vega10_gfxclk_table);
 			Array.Copy(tmpBytes, 0, data, this.atom_powerplay_table.usGfxclkDependencyTableOffset, tmpBytes.Length);
 
 			int offset = this.atom_powerplay_table.usGfxclkDependencyTableOffset + Marshal.SizeOf(this.atom_vega10_gfxclk_table);
-            tmpBytes = arrGetBytes<ATOM_Vega10_GFXCLK_Dependency_Record>(this.atom_vega10_gfxclk_entries);
+            tmpBytes = ArrGetBytes<ATOM_Vega10_GFXCLK_Dependency_Record>(this.atom_vega10_gfxclk_entries);
             Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
 
             // dump out hex string
@@ -323,7 +322,7 @@ namespace Vega64SoftPowerTableEditor
 		/// <returns>The bytes.</returns>
 		/// <param name="obj">Object.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		static byte[] getBytes<T>(T obj)
+		static byte[] GetBytes<T>(T obj)
 		{
 			int size = Marshal.SizeOf(obj);
 			byte[] arr = new byte[size];
@@ -336,12 +335,12 @@ namespace Vega64SoftPowerTableEditor
 		}
 
         /// <summary>
-        /// Arrs the get bytes.
+        /// Given a list of objects, convert to continous array of bytes representing the objects.
         /// </summary>
         /// <returns>The get bytes.</returns>
         /// <param name="obj">Object.</param>
         /// <typeparam name="T">The 1st type parameter.</typeparam>
-        static byte[] arrGetBytes<T>(List<T> obj)
+        static byte[] ArrGetBytes<T>(List<T> obj)
         {
             byte[] arr = new byte[obj.Count * Marshal.SizeOf(typeof(T))];
             byte[] tmpBytes = null;
@@ -349,7 +348,7 @@ namespace Vega64SoftPowerTableEditor
             int internal_offset = 0;
 
             foreach (T record in obj) {
-                tmpBytes = getBytes<T>(record);
+                tmpBytes = GetBytes<T>(record);
                 Array.Copy(tmpBytes, 0, arr, internal_offset, tmpBytes.Length);
                 internal_offset += Marshal.SizeOf(record);
             }
@@ -363,7 +362,7 @@ namespace Vega64SoftPowerTableEditor
 		/// <returns>The bytes.</returns>
 		/// <param name="arr">Arr.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		static T fromBytes<T>(byte[] arr)
+		static T FromBytes<T>(byte[] arr)
 		{
 			T obj = default(T);
 			int size = Marshal.SizeOf(obj);
@@ -383,12 +382,12 @@ namespace Vega64SoftPowerTableEditor
         /// <param name="offset">Offset.</param>
         /// <param name="entries">Entries.</param>
         /// <typeparam name="T">The 1st type parameter.</typeparam>
-		static List<T> arrFromBytes<T>(byte[] arr, int offset, int entries)
+		static List<T> ArrFromBytes<T>(byte[] arr, int offset, int entries)
 		{
 			List<T> retVal = new List<T>();
 			for (int i = 0; i< entries; i++)
 			{				
-				T record = fromBytes<T>(arr.Skip(offset).ToArray());
+				T record = FromBytes<T>(arr.Skip(offset).ToArray());
 				retVal.Add(record);
 				offset += Marshal.SizeOf(record);
 			}
