@@ -7,8 +7,13 @@ using System.Text.RegularExpressions;
 
 namespace Vega64SoftPowerTableEditor
 {
+
+	using USHORT = UInt16;
+	using UCHAR = Byte;
+	using ULONG = UInt32;
+
 	public class SoftPowerTable
-	{
+	{		
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct ATOM_COMMON_TABLE_HEADER
 		{
@@ -21,32 +26,47 @@ namespace Vega64SoftPowerTableEditor
 		public unsafe struct ATOM_POWERPLAY_TABLE
 		{
 			public ATOM_COMMON_TABLE_HEADER sHeader;
-			public Byte ucTableRevision;
-			public UInt16 usTableSize;
-			public UInt32 ulGoldenPPID;
-			public UInt32 ulGoldenRevision;
-			public UInt16 usFormatID;
-			public UInt32 ulPlatformCaps;
-			public UInt32 ulMaxODEngineClock;
-			public UInt32 ulMaxODMemoryClock;
-			public UInt16 usPowerControlLimit;
-			public UInt16 usUlvVoltageOffset;
-			public UInt16 usStateArrayOffset;
-			public UInt16 usFanTableOffset;
-			public UInt16 usThermalControllerOffset;
-			public UInt16 usReserv;
-			public UInt16 usMclkDependencyTableOffset;
-			public UInt16 usSclkDependencyTableOffset;
-			public UInt16 usVddcLookupTableOffset;
-			public UInt16 usVddgfxLookupTableOffset;
-			public UInt16 usMMDependencyTableOffset;
-			public UInt16 usVCEStateTableOffset;
-			public UInt16 usPPMTableOffset;
-			public UInt16 usPowerTuneTableOffset;
-			public UInt16 usHardLimitTableOffset;
-			public UInt16 usPCIETableOffset;
-			public UInt16 usGPIOTableOffset;
-			public fixed UInt16 usReserved[6];  };
+			UCHAR ucTableRevision;
+			USHORT usTableSize;                        /* the size of header structure */
+			ULONG ulGoldenPPID;                       /* PPGen use only */
+			ULONG ulGoldenRevision;                   /* PPGen use only */
+			USHORT usFormatID;                         /* PPGen use only */
+			ULONG ulPlatformCaps;                     /* See ATOM_Vega10_CAPS_* */
+			ULONG ulMaxODEngineClock;                 /* For Overdrive. */
+			ULONG ulMaxODMemoryClock;                 /* For Overdrive. */
+			USHORT usPowerControlLimit;
+			USHORT usUlvVoltageOffset;                 /* in mv units */
+			USHORT usUlvSmnclkDid;
+			USHORT usUlvMp1clkDid;
+			USHORT usUlvGfxclkBypass;
+			USHORT usGfxclkSlewRate;
+			UCHAR ucGfxVoltageMode;
+			UCHAR ucSocVoltageMode;
+			UCHAR ucUclkVoltageMode;
+			UCHAR ucUvdVoltageMode;
+			UCHAR ucVceVoltageMode;
+			UCHAR ucMp0VoltageMode;
+			UCHAR ucDcefVoltageMode;
+			USHORT usStateArrayOffset;                 /* points to ATOM_Vega10_State_Array */
+			USHORT usFanTableOffset;                   /* points to ATOM_Vega10_Fan_Table */
+			USHORT usThermalControllerOffset;          /* points to ATOM_Vega10_Thermal_Controller */
+			USHORT usSocclkDependencyTableOffset;      /* points to ATOM_Vega10_SOCCLK_Dependency_Table */
+			USHORT usMclkDependencyTableOffset;        /* points to ATOM_Vega10_MCLK_Dependency_Table */
+			USHORT usGfxclkDependencyTableOffset;      /* points to ATOM_Vega10_GFXCLK_Dependency_Table */
+			USHORT usDcefclkDependencyTableOffset;     /* points to ATOM_Vega10_DCEFCLK_Dependency_Table */
+			USHORT usVddcLookupTableOffset;            /* points to ATOM_Vega10_Voltage_Lookup_Table */
+			USHORT usVddmemLookupTableOffset;          /* points to ATOM_Vega10_Voltage_Lookup_Table */
+			USHORT usMMDependencyTableOffset;          /* points to ATOM_Vega10_MM_Dependency_Table */
+			USHORT usVCEStateTableOffset;              /* points to ATOM_Vega10_VCE_State_Table */
+			USHORT usReserve;                          /* No PPM Support for Vega10 */
+			USHORT usPowerTuneTableOffset;             /* points to ATOM_Vega10_PowerTune_Table */
+			USHORT usHardLimitTableOffset;             /* points to ATOM_Vega10_Hard_Limit_Table */
+			USHORT usVddciLookupTableOffset;           /* points to ATOM_Vega10_Voltage_Lookup_Table */
+			USHORT usPCIETableOffset;                  /* points to ATOM_Vega10_PCIE_Table */
+			USHORT usPixclkDependencyTableOffset;      /* points to ATOM_Vega10_PIXCLK_Dependency_Table */
+			USHORT usDispClkDependencyTableOffset;     /* points to ATOM_Vega10_DISPCLK_Dependency_Table */
+			USHORT usPhyClkDependencyTableOffset;      /* points to ATOM_Vega10_PHYCLK_Dependency_Table */
+		};
 
 		private static String STR_WIN_VER = "Windows Registry Editor Version";
 		private Regex REGEX_WIN_VER = new Regex("Windows Registry Editor Version (.*)", RegexOptions.IgnorePatternWhitespace);
