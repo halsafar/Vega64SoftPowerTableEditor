@@ -1,7 +1,7 @@
 # Vega64SoftPowerTableEditor
 Windows Vega 64 Soft Power Table Editor
 
-Written in Mono with GTK#.
+Written in C# Mono with GTK#.
 
 ## Current Status:
  - Proof of concept, parsing main elements, nothing more.
