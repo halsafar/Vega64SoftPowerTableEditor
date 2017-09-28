@@ -159,7 +159,6 @@ namespace Vega64SoftPowerTableEditor
 			public USHORT usFanStartTemperature;
 		};
 
-
 		public ATOM_POWERPLAY_TABLE atom_powerplay_table;
 
 		public ATOM_Vega10_State_Array atom_vega10_state_array;
@@ -184,8 +183,9 @@ namespace Vega64SoftPowerTableEditor
 		private static String STR_PHM_PPT = "PP_PhmSoftPowerPlayTable";
 		private static String STR_HEX_START = "=hex:";
 
-		public String windowsRegistryVersion = null;
-		public List<int> hexBlobNewLineIndices = new List<int>();
+		private int _totalSize = 0;
+		private String _windowsRegistryVersion = null;
+		private List<int> _hexBlobNewLineIndices = new List<int>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:Vega64SoftPowerTableEditor.SoftPowerTable"/> class.
@@ -212,7 +212,7 @@ namespace Vega64SoftPowerTableEditor
 				// Grab the Win ver just in case, probably the same for everyone.
 				if (line.Contains(STR_WIN_VER))
 				{
-					spt.windowsRegistryVersion = line;
+					spt._windowsRegistryVersion = line;
 					Console.WriteLine(line);
 				}
 
@@ -235,7 +235,7 @@ namespace Vega64SoftPowerTableEditor
 				}
 				hexData += data.Substring(start, newlineIndex-start);
 
-				spt.hexBlobNewLineIndices.Add(newlineIndex);
+				spt._hexBlobNewLineIndices.Add(newlineIndex);
 
 				start = newlineIndex + 1;
 			}
@@ -244,6 +244,7 @@ namespace Vega64SoftPowerTableEditor
 			hexData = Regex.Replace(hexData, @"\t|\n|\r|\s+|\\|,", "");
 
 			byte[] byteArray = StringToByteArray(hexData);
+			spt._totalSize = byteArray.Length;
 
 			// parse main table
 			spt.atom_powerplay_table = fromBytes<ATOM_POWERPLAY_TABLE>(byteArray);
@@ -286,13 +287,36 @@ namespace Vega64SoftPowerTableEditor
 			return spt;
 		}
 
+		/// <summary>
+		/// Saves the reg file.
+		/// </summary>
 		public void saveRegFile()
 		{
-			byte[] bytes = getBytes<ATOM_POWERPLAY_TABLE>(this.atom_powerplay_table);
-			string hex = BitConverter.ToString(bytes).Replace("-", String.Empty);
+			byte[] data = new byte[this._totalSize];
+			byte[] tmpBytes = getBytes<ATOM_POWERPLAY_TABLE>(this.atom_powerplay_table);
+			Array.Copy(tmpBytes, 0, data, 0, tmpBytes.Length);
+
+			tmpBytes = getBytes<ATOM_Vega10_GFXCLK_Dependency_Table>(this.atom_vega10_gfxclk_table);
+			Array.Copy(tmpBytes, 0, data, this.atom_powerplay_table.usGfxclkDependencyTableOffset, tmpBytes.Length);
+
+			int offset = this.atom_powerplay_table.usGfxclkDependencyTableOffset + Marshal.SizeOf(this.atom_vega10_gfxclk_table);
+			foreach (ATOM_Vega10_GFXCLK_Dependency_Record record in this.atom_vega10_gfxclk_entries)
+			{
+				tmpBytes = getBytes<ATOM_Vega10_GFXCLK_Dependency_Record>(record);
+				Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
+				offset += Marshal.SizeOf(record);
+			}
+
+			string hex = BitConverter.ToString(data).Replace("-", String.Empty);
 			Console.WriteLine(hex);
 		}
 
+		/// <summary>
+		/// Marshal data to byte array
+		/// </summary>
+		/// <returns>The bytes.</returns>
+		/// <param name="obj">Object.</param>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		static byte[] getBytes<T>(T obj)
 		{
 			int size = Marshal.SizeOf(obj);
@@ -304,6 +328,7 @@ namespace Vega64SoftPowerTableEditor
 			Marshal.FreeHGlobal(ptr);
 			return arr;
 		}
+
 
 		/// <summary>
 		/// Marshal the data from byte array
