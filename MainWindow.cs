@@ -3,11 +3,13 @@ using Gtk;
 
 public partial class MainWindow : Gtk.Window
 {
+    private Vega64SoftPowerTableEditor.SoftPowerTable _spt;
+
     public MainWindow() : base(Gtk.WindowType.Toplevel)
     {
         Build();
-		Vega64SoftPowerTableEditor.SoftPowerTable spt = Vega64SoftPowerTableEditor.SoftPowerTable.openRegFile();
-		spt.saveRegFile();
+        this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.openRegFile();
+		this._spt.saveRegFile();
     }
 
     protected void OnDeleteEvent(object sender, DeleteEventArgs a)

@@ -289,12 +289,8 @@ namespace Vega64SoftPowerTableEditor
 			Array.Copy(tmpBytes, 0, data, this.atom_powerplay_table.usGfxclkDependencyTableOffset, tmpBytes.Length);
 
 			int offset = this.atom_powerplay_table.usGfxclkDependencyTableOffset + Marshal.SizeOf(this.atom_vega10_gfxclk_table);
-			foreach (ATOM_Vega10_GFXCLK_Dependency_Record record in this.atom_vega10_gfxclk_entries)
-			{
-				tmpBytes = getBytes<ATOM_Vega10_GFXCLK_Dependency_Record>(record);
-				Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
-				offset += Marshal.SizeOf(record);
-			}
+            tmpBytes = arrGetBytes<ATOM_Vega10_GFXCLK_Dependency_Record>(this.atom_vega10_gfxclk_entries);
+            Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
 
             // dump out hex string
 			string hex = BitConverter.ToString(data).Replace("-", String.Empty);
@@ -339,11 +335,26 @@ namespace Vega64SoftPowerTableEditor
 			return arr;
 		}
 
+        /// <summary>
+        /// Arrs the get bytes.
+        /// </summary>
+        /// <returns>The get bytes.</returns>
+        /// <param name="obj">Object.</param>
+        /// <typeparam name="T">The 1st type parameter.</typeparam>
         static byte[] arrGetBytes<T>(List<T> obj)
         {
-            byte[] retVal = null;
+            byte[] arr = new byte[obj.Count * Marshal.SizeOf(typeof(T))];
+            byte[] tmpBytes = null;
 
-            return retVal;
+            int internal_offset = 0;
+
+            foreach (T record in obj) {
+                tmpBytes = getBytes<T>(record);
+                Array.Copy(tmpBytes, 0, arr, internal_offset, tmpBytes.Length);
+                internal_offset += Marshal.SizeOf(record);
+            }
+
+            return arr;
         }
 
 		/// <summary>
