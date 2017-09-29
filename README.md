@@ -3,6 +3,8 @@ Windows Vega 56/64 Soft Power Table Editor
 
 Written in C# Mono with GTK#.
 
+If you find this useful consider [Donating](#Donations)
+
 ## Current Status:
  - Works on VEGA 64 and VEGA 56
  - Parse Registry File
@@ -14,6 +16,9 @@ Written in C# Mono with GTK#.
 
 ## Disclaimer:
  - Have not coded in C# for over 10 years.  Why I chose to for this is merely a forced refresher.
+ 
+## Want To Help:
+ - Send a pull request.  
  
 ### Warnings / No Liability:
  - No verification is done to make sure the values are sane.
