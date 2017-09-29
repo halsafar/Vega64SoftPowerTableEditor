@@ -25,6 +25,16 @@ public partial class MainWindow
 
 	private global::Gtk.Table table1;
 
+	private global::Gtk.VBox vbox_fantable;
+
+	private global::Gtk.VBox vbox_gfxclk;
+
+	private global::Gtk.VBox vbox_gfxvdd;
+
+	private global::Gtk.VBox vbox_memclk;
+
+	private global::Gtk.VBox vbox_memvdd;
+
 	private global::Gtk.VBox vbox_powerTable;
 
 	protected virtual void Build()
@@ -65,7 +75,7 @@ public partial class MainWindow
 		this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget("/menubar1")));
 		this.menubar1.Name = "menubar1";
 		this.vbox1.Add(this.menubar1);
-		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.menubar1]));
+		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.menubar1]));
 		w2.Position = 0;
 		w2.Expand = false;
 		w2.Fill = false;
@@ -77,23 +87,72 @@ public partial class MainWindow
 		global::Gtk.Viewport w3 = new global::Gtk.Viewport();
 		w3.ShadowType = ((global::Gtk.ShadowType)(0));
 		// Container child GtkViewport.Gtk.Container+ContainerChild
-		this.table1 = new global::Gtk.Table(((uint)(3)), ((uint)(3)), false);
+		this.table1 = new global::Gtk.Table(((uint)(3)), ((uint)(3)), true);
 		this.table1.Name = "table1";
 		this.table1.RowSpacing = ((uint)(6));
 		this.table1.ColumnSpacing = ((uint)(6));
+		// Container child table1.Gtk.Table+TableChild
+		this.vbox_fantable = new global::Gtk.VBox();
+		this.vbox_fantable.Name = "vbox_fantable";
+		this.vbox_fantable.Spacing = 6;
+		this.table1.Add(this.vbox_fantable);
+		global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_fantable]));
+		w4.TopAttach = ((uint)(1));
+		w4.BottomAttach = ((uint)(2));
+		w4.XOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table1.Gtk.Table+TableChild
+		this.vbox_gfxclk = new global::Gtk.VBox();
+		this.vbox_gfxclk.Name = "vbox_gfxclk";
+		this.vbox_gfxclk.Spacing = 6;
+		this.table1.Add(this.vbox_gfxclk);
+		global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_gfxclk]));
+		w5.LeftAttach = ((uint)(1));
+		w5.RightAttach = ((uint)(2));
+		w5.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table1.Gtk.Table+TableChild
+		this.vbox_gfxvdd = new global::Gtk.VBox();
+		this.vbox_gfxvdd.Name = "vbox_gfxvdd";
+		this.vbox_gfxvdd.Spacing = 6;
+		this.table1.Add(this.vbox_gfxvdd);
+		global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_gfxvdd]));
+		w6.TopAttach = ((uint)(1));
+		w6.BottomAttach = ((uint)(2));
+		w6.LeftAttach = ((uint)(1));
+		w6.RightAttach = ((uint)(2));
+		// Container child table1.Gtk.Table+TableChild
+		this.vbox_memclk = new global::Gtk.VBox();
+		this.vbox_memclk.Name = "vbox_memclk";
+		this.vbox_memclk.Spacing = 6;
+		this.table1.Add(this.vbox_memclk);
+		global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_memclk]));
+		w7.LeftAttach = ((uint)(2));
+		w7.RightAttach = ((uint)(3));
+		w7.YOptions = ((global::Gtk.AttachOptions)(4));
+		// Container child table1.Gtk.Table+TableChild
+		this.vbox_memvdd = new global::Gtk.VBox();
+		this.vbox_memvdd.Name = "vbox_memvdd";
+		this.vbox_memvdd.Spacing = 6;
+		this.table1.Add(this.vbox_memvdd);
+		global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_memvdd]));
+		w8.TopAttach = ((uint)(1));
+		w8.BottomAttach = ((uint)(2));
+		w8.LeftAttach = ((uint)(2));
+		w8.RightAttach = ((uint)(3));
 		// Container child table1.Gtk.Table+TableChild
 		this.vbox_powerTable = new global::Gtk.VBox();
 		this.vbox_powerTable.Name = "vbox_powerTable";
 		this.vbox_powerTable.Spacing = 6;
 		this.table1.Add(this.vbox_powerTable);
+		global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_powerTable]));
+		w9.XOptions = ((global::Gtk.AttachOptions)(7));
+		w9.YOptions = ((global::Gtk.AttachOptions)(7));
 		w3.Add(this.table1);
 		this.GtkScrolledWindow.Add(w3);
 		this.vbox1.Add(this.GtkScrolledWindow);
-		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
-		w7.Position = 1;
+		global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
+		w12.Position = 1;
 		this.Add(this.vbox1);
-		if ((this.Child != null))
-		{
+		if ((this.Child != null)) {
 			this.Child.ShowAll();
 		}
 		this.DefaultWidth = 1742;

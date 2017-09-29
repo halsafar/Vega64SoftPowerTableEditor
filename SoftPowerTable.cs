@@ -274,7 +274,7 @@ namespace Vega64SoftPowerTableEditor
 		/// <summary>
 		/// Saves the reg file.
 		/// </summary>
-		public void SaveRegFile()
+		public void SaveRegFile(string filename)
 		{
             // clone the original data
             byte[] data = this._originalData.ToArray();
@@ -313,6 +313,9 @@ namespace Vega64SoftPowerTableEditor
 
             // remove extra comma at end
             s = s.Remove(s.Length - 1);
+
+            // save to file
+            File.WriteAllText(filename, s);
 		}
 
 		/// <summary>

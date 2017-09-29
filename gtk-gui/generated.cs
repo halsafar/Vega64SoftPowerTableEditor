@@ -8,8 +8,7 @@ namespace Stetic
 
 		internal static void Initialize(Gtk.Widget iconRenderer)
 		{
-			if ((Stetic.Gui.initialized == false))
-			{
+			if ((Stetic.Gui.initialized == false)) {
 				Stetic.Gui.initialized = true;
 			}
 		}
