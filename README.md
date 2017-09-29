@@ -3,7 +3,7 @@ Windows Vega 56/64 Soft Power Table Editor
 
 Written in C# Mono with GTK#.
 
-If you find this useful consider [Donating](#Donations)
+If you find this useful consider [Donating](#donations)
 
 ## Current Status:
  - Works on VEGA 64 and VEGA 56
