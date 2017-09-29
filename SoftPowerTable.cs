@@ -207,12 +207,12 @@ namespace Vega64SoftPowerTableEditor
 		/// Opens the reg file.
 		/// </summary>
 		/// <returns>SoftPowerTable</returns>
-		public static SoftPowerTable OpenRegFile()
+		public static SoftPowerTable OpenRegFile(string filename)
 		{
 			SoftPowerTable spt = new SoftPowerTable();
 
 			// Parse out the hex data
-            spt._originalText = File.ReadAllText ("RX_VEGA_64_Soft_PP.reg");
+            spt._originalText = File.ReadAllText(filename);
             spt._hexStartIndex = spt._originalText.IndexOf(STR_HEX_START, StringComparison.Ordinal) + STR_HEX_START.Length;
             String hexData = spt._originalText.Substring(spt._hexStartIndex, spt._originalText.Length - spt._hexStartIndex);
 

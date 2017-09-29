@@ -65,7 +65,7 @@ public partial class MainWindow
 		this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget("/menubar1")));
 		this.menubar1.Name = "menubar1";
 		this.vbox1.Add(this.menubar1);
-		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.menubar1]));
+		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.menubar1]));
 		w2.Position = 0;
 		w2.Expand = false;
 		w2.Fill = false;
@@ -89,10 +89,11 @@ public partial class MainWindow
 		w3.Add(this.table1);
 		this.GtkScrolledWindow.Add(w3);
 		this.vbox1.Add(this.GtkScrolledWindow);
-		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
+		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
 		w7.Position = 1;
 		this.Add(this.vbox1);
-		if ((this.Child != null)) {
+		if ((this.Child != null))
+		{
 			this.Child.ShowAll();
 		}
 		this.DefaultWidth = 1742;

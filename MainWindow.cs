@@ -5,20 +5,13 @@ using Gtk;
 
 class ClampedBindedEntry: Gtk.Entry
 {
-    public FieldInfo f;
-    public Type t;
+    private FieldInfo _fieldInfo;
+    private Type _type;
 
     public ClampedBindedEntry(FieldInfo field, System.Type type) : base()
     {
-        this.f = field;
-        this.t = type;
-
-        try {
-            Console.WriteLine(type.GetField("MaxValue").GetValue(null));
-        } catch (NullReferenceException e)
-        {
-            
-        }
+        this._fieldInfo = field;
+        this._type = type;
     }
 }
 
@@ -30,10 +23,14 @@ public partial class MainWindow : Gtk.Window
     public MainWindow() : base(Gtk.WindowType.Toplevel)
     {
         Build();
-        this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.OpenRegFile();
-		this._spt.SaveRegFile();
 
-        object foo = this._spt.atom_powerplay_table;
+        this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.OpenRegFile("RX_VEGA_64_Soft_PP.reg");
+        this._spt.SaveRegFile();
+
+        this.setupWidgets();
+    }
+
+    protected void setupWidgets() {
         foreach (var field in this._spt.atom_powerplay_table.GetType().GetFields(BindingFlags.Instance |
                                                                                  BindingFlags.NonPublic |
                                                                                  BindingFlags.Public)) {
@@ -48,8 +45,21 @@ public partial class MainWindow : Gtk.Window
             e.Text = field_value;
 
             e.Changed += delegate {
+                // Delegate clamps value and assigns it, some python-esque c#
+                string newValue = e.Text;
+
+                var maxValueField = field.FieldType.GetField("MaxValue");
                 var converter = System.ComponentModel.TypeDescriptor.GetConverter(field.FieldType);
-                field.SetValueDirect(__makeref(this._spt.atom_powerplay_table), converter.ConvertFrom(e.Text)); 
+
+                try {
+                    var v = converter.ConvertFrom(newValue);
+                    field.SetValueDirect(__makeref(this._spt.atom_powerplay_table), v); 
+                } catch (System.Exception) {
+                    if (maxValueField != null) {
+                         var maxValue = maxValueField.GetValue(null);
+                         e.Text = maxValue.ToString();
+                    }
+                }
             }; 
 
             hbox.PackStart(l, false, false, 0);
@@ -61,13 +71,7 @@ public partial class MainWindow : Gtk.Window
         }
 
         this.ShowAll();
-    }
-
-    void callback(object obj, EventArgs args)
-    {
-        
-        Console.WriteLine("Hello again - cool button was pressed");
-    }
+    }      
 
     protected void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
@@ -89,6 +93,19 @@ public partial class MainWindow : Gtk.Window
 
 	protected void OnLoad(object sender, EventArgs e)
 	{
+        Gtk.FileChooserDialog filechooser =
+        		new Gtk.FileChooserDialog("Choose the file to open",
+        			this,
+        			FileChooserAction.Open,
+        			"Cancel", ResponseType.Cancel,
+        			"Open", ResponseType.Accept);
+        if (filechooser.Run() == (int)ResponseType.Accept) 
+        {
+            this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.OpenRegFile(filechooser.Filename);
+            this.setupWidgets();
+        }
+
+        filechooser.Destroy();
 	}
 
 	protected void OnAbout(object sender, EventArgs e)
