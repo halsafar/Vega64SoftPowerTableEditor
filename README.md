@@ -1,10 +1,39 @@
 # Vega64SoftPowerTableEditor
-Windows Vega 64 Soft Power Table Editor
+Windows Vega 56/64 Soft Power Table Editor
 
 Written in C# Mono with GTK#.
 
 ## Current Status:
- - Proof of concept, parsing main elements, nothing more.
+ - Works on VEGA 64 and VEGA 56
+ - Parse Registry File
+ - Display and edit Gfx and Mem Clock + VDD
+ - Save
+ - Clamping on data to its type
+ 
+## Disclaimer:
+ - Have not coded in C# for over 10 years.  Why I chose to for this is merely a forced refresher.
+ 
+### Warnings / No Liability:
+ - No verification is done to make sure the values are sane.
+ - You are on your own if you break your GPU.
+ 
+# Installation
+ - Acquire an existing registry file for your VEGA 56/64
+ - Load into this program
+ - Edit as you see fit
+ - Save
+ - Open Wattman and reset your GPU, set Voltage to manual, apply.
+ - Apply the registry file to each card (if you have multiple cards adjust the path)
+ - Reboot
+ - Open Wattman
+ - Hit reset, apply, set voltage to manual, apply.
+
+# Thanks
+ - Hellm @ http://www.overclock.net [Profile](http://www.overclock.net/u/511964/hellm)
+ - If I missed anyone in the discovery of the SoftPowerTable trick let me know.
+
+# No Thanks
+ - Anyone at https://bitcointalk.org who instead of sharing and helping demanded payments.
 
 # Donations
 
