@@ -10,6 +10,8 @@ Written in C# Mono with GTK#.
  - Save
  - Clamping on data to its type
  
+ <img src="https://github.com/halsafar/Vega64SoftPowerTableEditor/blob/master/screenshots/screenshot.png" width="800"/>
+
 ## Disclaimer:
  - Have not coded in C# for over 10 years.  Why I chose to for this is merely a forced refresher.
  
