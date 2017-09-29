@@ -32,7 +32,7 @@ public partial class MainWindow : Gtk.Window
 
     protected void setupWidgets() {
         this.populateSection("PowerPlay Table", this._spt.atom_powerplay_table, this.vbox_powerTable);
-        this.populateSection("Fan Table", this._spt.atom_vega10_fan_table, this.vbox_fantable);
+        this.populateSection("Fan Table", this._spt.atom_vega10_fan_table, this.vbox_powerTable);
 
         foreach (Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_GFXCLK_Dependency_Record record in this._spt.atom_vega10_gfxclk_entries)
         {
@@ -40,15 +40,15 @@ public partial class MainWindow : Gtk.Window
         }
 
         foreach (Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_MCLK_Dependency_Record record in this._spt.atom_vega10_memclk_entries) {
-            this.populateSection("Mem Clock", record, this.vbox_memclk);
+            this.populateSection("Mem Clock", record, this.vbox_gfxclk);
         }
 
         foreach (Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_Voltage_Lookup_Record record in this._spt.atom_vega10_gfxvdd_record) {
-            this.populateSection("Gfx Vdd", record, this.vbox_gfxvdd);
+            this.populateSection("Gfx Vdd", record, this.vbox_memclk);
         }
 
         foreach (Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_Voltage_Lookup_Record record in this._spt.atom_vega10_memvdd_record) {
-            this.populateSection("Mem Vdd", record, this.vbox_memvdd);
+            this.populateSection("Mem Vdd", record, this.vbox_memclk);
         }
 
         this.ShowAll();
@@ -97,13 +97,15 @@ public partial class MainWindow : Gtk.Window
                 }
             };
 
-            hbox.PackStart(new Alignment(0f, 0f, 0.5f, 0.5f) { l }, true, true, 0);
-            hbox.PackStart(new Alignment(0f, 0f, 0f, 0f) { e }, true, true, 0);
+            hbox.PackStart(new Alignment(0f, 0f, 0.5f, 0.5f) { l }, true, true, 10);
+            hbox.PackStart(new Alignment(0f, 0f, 0f, 0f) { e }, true, true, 10);
 
             vbox.PackStart(hbox, false, false, 0);
 
             //Console.WriteLine("{0} = {1}", field.Name, field.GetValue(this._spt.atom_powerplay_table));
-        }        
+        }      
+
+        vbox.PackStart(new HSeparator(), false, false, 25);
     }
 
     protected void OnDeleteEvent(object sender, DeleteEventArgs a)
