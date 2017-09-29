@@ -5,6 +5,11 @@ Written in C# Mono with GTK#.
 
 If you find this useful consider [Donating](#donations)
 
+## Warnings / No Liability:
+ - No verification is done to make sure the values are sane.
+ - You can pretty much edit anything in the power table even values you should not touch.
+ - You are on your own if you break your GPU.
+
 ## Current Status:
  - Works on VEGA 64 and VEGA 56
  - Parse Registry File
@@ -18,12 +23,8 @@ If you find this useful consider [Donating](#donations)
  - Have not coded in C# for over 10 years.  Why I chose to for this is merely a forced refresher.
  
 ## Want To Help:
- - Send a pull request.  
- 
-### Warnings / No Liability:
- - No verification is done to make sure the values are sane.
- - You are on your own if you break your GPU.
- 
+ - Pull requests are always welcome!  
+  
 # Installation
  - Acquire an existing registry file for your VEGA 56/64
  - Load into this program
