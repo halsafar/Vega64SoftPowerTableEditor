@@ -11,10 +11,10 @@ If you find this useful consider [Donating](#donations)
  - You are on your own if you break your GPU.
 
 ## Current Status:
+ - __Saving is BROKEN in current build__
  - Works on VEGA 64 and VEGA 56
  - Parse Registry File
  - Display and edit Gfx and Mem Clock + VDD
- - Save
  - Clamping on data to its type
  
  <img src="https://github.com/halsafar/Vega64SoftPowerTableEditor/blob/master/screenshots/screenshot.png" width="800"/>
