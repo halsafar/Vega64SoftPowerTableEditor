@@ -24,10 +24,10 @@ public partial class MainWindow : Gtk.Window
     {
         Build();
 
-        this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.OpenRegFile("RX_VEGA_64_Soft_PP.reg");
-        this._spt.SaveRegFile("Test.reg");
+        //this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.OpenRegFile("RX_VEGA_64_Soft_PP.reg");
+        //this._spt.SaveRegFile("Test.reg");
 
-        this.setupWidgets();
+        //this.setupWidgets();
     }
 
     protected void setupWidgets() {
@@ -101,7 +101,7 @@ public partial class MainWindow : Gtk.Window
                 }
             };
 
-            hbox.PackStart(new Alignment(0f, 0f, 0.5f, 0.5f) { l }, true, true, 10);
+            hbox.PackStart(new Alignment(0f, 0f, 0, 0f) { l }, true, true, 10);
             hbox.PackStart(new Alignment(0f, 0f, 0f, 0f) { e }, true, true, 10);
 
             vbox.PackStart(hbox, false, false, 0);
