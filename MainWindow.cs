@@ -53,6 +53,8 @@ public partial class MainWindow : Gtk.Window
 			this.populateSection("Mem Vdd " + i, record, this.vbox_memclk);
         }
 
+        this.populateSection("Power Tune Table", this._spt.atom_vega10_powertune_table, this.vbox_memclk);
+
         this.ShowAll();
     }      
 

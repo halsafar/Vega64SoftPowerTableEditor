@@ -64,7 +64,7 @@ namespace Vega64SoftPowerTableEditor
 			USHORT usMMDependencyTableOffset;          /* points to ATOM_Vega10_MM_Dependency_Table */
 			USHORT usVCEStateTableOffset;              /* points to ATOM_Vega10_VCE_State_Table */
 			USHORT usReserve;                          /* No PPM Support for Vega10 */
-			USHORT usPowerTuneTableOffset;             /* points to ATOM_Vega10_PowerTune_Table */
+			public USHORT usPowerTuneTableOffset;             /* points to ATOM_Vega10_PowerTune_Table */
 			USHORT usHardLimitTableOffset;             /* points to ATOM_Vega10_Hard_Limit_Table */
 			USHORT usVddciLookupTableOffset;           /* points to ATOM_Vega10_Voltage_Lookup_Table */
 			USHORT usPCIETableOffset;                  /* points to ATOM_Vega10_PCIE_Table */
@@ -144,25 +144,59 @@ namespace Vega64SoftPowerTableEditor
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public unsafe struct ATOM_Vega10_Fan_Table
 		{
-			public UCHAR ucRevId;                         /* Change this if the table format changes or version changes so that the other fields are not the same. */
-			public USHORT usFanOutputSensitivity;          /* Sensitivity of fan reaction to temepature changes. */
-			public USHORT usFanRPMMax;                     /* The default value in RPM. */
-			public USHORT usThrottlingRPM;
-			public USHORT usFanAcousticLimit;              /* Minimum Fan Controller Frequency Acoustic Limit. */
-			public USHORT usTargetTemperature;             /* The default ideal temperature in Celcius. */
-			public USHORT usMinimumPWMLimit;               /* The minimum PWM that the advanced fan controller can set. */
-			public USHORT usTargetGfxClk;                   /* The ideal Fan Controller GFXCLK Frequency Acoustic Limit. */
-			public USHORT usFanGainEdge;
-			public USHORT usFanGainHotspot;
-			public USHORT usFanGainLiquid;
-			public USHORT usFanGainVrVddc;
-			public USHORT usFanGainVrMvdd;
-			public USHORT usFanGainPlx;
-			public USHORT usFanGainHbm;
-			public UCHAR ucEnableZeroRPM;
-			public USHORT usFanStopTemperature;
-			public USHORT usFanStartTemperature;
+            public UCHAR ucRevId;
+            public USHORT usFanOutputSensitivity;
+            public USHORT usFanAcousticLimitRpm;
+            public USHORT usThrottlingRPM;
+            public USHORT usTargetTemperature;
+            public USHORT usMinimumPWMLimit;
+            public USHORT usTargetGfxClk;
+            public USHORT usFanGainEdge;
+            public USHORT usFanGainHotspot;
+            public USHORT usFanGainLiquid;
+            public USHORT usFanGainVrVddc;
+            public USHORT usFanGainVrMvdd;
+            public USHORT usFanGainPlx;
+            public USHORT usFanGainHbm;
+            public UCHAR ucEnableZeroRPM;
+            public USHORT usFanStopTemperature;
+            public USHORT usFanStartTemperature;
+            public UCHAR ucFanParameters;
+            public UCHAR ucFanMinRPM;
+            public UCHAR ucFanMaxRPM;
 		};
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public unsafe struct ATOM_Vega10_PowerTune_Table_V3
+        {
+            public UCHAR ucRevId;
+            public USHORT usSocketPowerLimit;
+            public USHORT usBatteryPowerLimit;
+            public USHORT usSmallPowerLimit;
+            public USHORT usTdcLimit;
+            public USHORT usEdcLimit;
+            public USHORT usSoftwareShutdownTemp;
+            public USHORT usTemperatureLimitHotSpot;
+            public USHORT usTemperatureLimitLiquid1;
+            public USHORT usTemperatureLimitLiquid2;
+            public USHORT usTemperatureLimitHBM;
+            public USHORT usTemperatureLimitVrSoc;
+            public USHORT usTemperatureLimitVrMem;
+            public USHORT usTemperatureLimitPlx;
+            public USHORT usLoadLineResistance;
+            public UCHAR ucLiquid1_I2C_address;
+            public UCHAR ucLiquid2_I2C_address;
+            public UCHAR ucLiquid_I2C_Line;
+            public UCHAR ucVr_I2C_address;
+            public UCHAR ucVr_I2C_Line;
+            public UCHAR ucPlx_I2C_address;
+            public UCHAR ucPlx_I2C_Line;
+            public USHORT usTemperatureLimitTedge;
+            public USHORT usBoostStartTemperature;
+            public USHORT usBoostStopTemperature;
+            public ULONG ulBoostClock;
+            public fixed ULONG Reserve[2];
+        };
 
         //
         // PowerTable Members
@@ -184,6 +218,8 @@ namespace Vega64SoftPowerTableEditor
 		public List<ATOM_Vega10_Voltage_Lookup_Record> atom_vega10_memvdd_record = new List<ATOM_Vega10_Voltage_Lookup_Record>();
 
 		public ATOM_Vega10_Fan_Table atom_vega10_fan_table;
+
+        public ATOM_Vega10_PowerTune_Table_V3 atom_vega10_powertune_table;
 
         //
         // Private Members
@@ -264,6 +300,9 @@ namespace Vega64SoftPowerTableEditor
 
 			// parse fan table
 			spt.atom_vega10_fan_table = FromBytes<ATOM_Vega10_Fan_Table>(byteArray.Skip(spt.atom_powerplay_table.usFanTableOffset).ToArray());
+
+            // parse powertune table
+            spt.atom_vega10_powertune_table = FromBytes<ATOM_Vega10_PowerTune_Table_V3>(byteArray.Skip(spt.atom_powerplay_table.usPowerTuneTableOffset).ToArray());
 
             // debug
             Console.WriteLine(spt._originalText);
