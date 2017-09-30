@@ -11,7 +11,7 @@ If you find this useful consider [Donating](#donations)
  - You are on your own if you break your GPU.
 
 ## Current Status:
- - __Saving is BROKEN in current build__
+ - Saving works!
  - Works on VEGA 64 and VEGA 56
  - Parse Registry File
  - Display and edit Gfx and Mem Clock + VDD
