@@ -14,7 +14,7 @@ If you find this useful consider [Donating](#donations)
  - Saving works!
  - Works on VEGA 64 and VEGA 56
  - Parse Registry File
- - Display and edit Gfx and Mem Clock + VDD
+ - Display and edit Gfx/Mem Clock, Gfx/Mem Vdd, PowerTune Table, Fan Table
  - Clamping on data to its type
  
  <img src="https://github.com/halsafar/Vega64SoftPowerTableEditor/blob/master/screenshots/screenshot.png" width="800"/>
