@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Gtk;
@@ -20,17 +21,24 @@ public partial class MainWindow : Gtk.Window
 {
     private Vega64SoftPowerTableEditor.SoftPowerTable _spt;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:MainWindow"/> class.
+    /// </summary>
     public MainWindow() : base(Gtk.WindowType.Toplevel)
     {
         Build();
 
+        // Easy testing
         //this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.OpenRegFile("RX_VEGA_64_Soft_PP.reg");
         //this._spt.SaveRegFile("Test.reg");
-
         //this.setupWidgets();
     }
 
-    protected void setupWidgets() {
+    /// <summary>
+    /// Setup all widgets based on stored SoftPowerTable
+    /// </summary>
+    protected void setupWidgets() 
+    {
         this.populateSection("PowerPlay Table", this._spt.atom_powerplay_table, this.vbox_powerTable);
         this.populateSection("Fan Table", this._spt.atom_vega10_fan_table, this.vbox_powerTable);
 
@@ -58,7 +66,16 @@ public partial class MainWindow : Gtk.Window
         this.ShowAll();
     }      
 
-    protected void populateSection(string sectionName, object obj, VBox vbox) {
+    /// <summary>
+    /// Auto Generate Label and Entry edit widgets for each field in obj.
+    /// HBox is created for the new widgets and the HBox is appended to the supplied VBox.
+    /// </summary>
+    /// <param name="sectionName">Section name.</param>
+    /// <param name="obj">Object.</param>
+    /// <param name="vbox">Vbox.</param>
+    /// <typeparam name="T">The 1st type parameter.</typeparam>
+    protected void populateSection<T>(string sectionName, T obj, VBox vbox)
+    {
         // create the header
         Label header = new Label();
         header.Markup = String.Format("<b>{0}</b>", sectionName);
@@ -68,9 +85,7 @@ public partial class MainWindow : Gtk.Window
         vbox.Homogeneous = false;
         vbox.PackStart(header, false, false, 0);
 
-        foreach (var field in obj.GetType().GetFields(BindingFlags.Instance |
-                                                      BindingFlags.NonPublic |
-                                                      BindingFlags.Public)) {
+        foreach (var field in obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)) {
             var field_value = field.GetValue(obj).ToString();
 
             HBox hbox = new HBox(true, 0);
@@ -112,17 +127,32 @@ public partial class MainWindow : Gtk.Window
         vbox.PackStart(new HSeparator(), false, false, 25);
     }
 
+    /// <summary>
+    /// Ons the delete event.
+    /// </summary>
+    /// <param name="sender">Sender.</param>
+    /// <param name="a">The alpha component.</param>
     protected void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
         Application.Quit();
         a.RetVal = true;
     }
 
+    /// <summary>
+    /// Ons the exit.
+    /// </summary>
+    /// <param name="sender">Sender.</param>
+    /// <param name="e">E.</param>
 	protected void OnExit(object sender, EventArgs e)
 	{
 		Application.Quit();
 	}
 
+    /// <summary>
+    /// Always treat as Save As for now.
+    /// </summary>
+    /// <param name="sender">Sender.</param>
+    /// <param name="e">E.</param>
 	protected void OnSave(object sender, EventArgs e)
 	{
         if (this._spt != null)
@@ -142,6 +172,11 @@ public partial class MainWindow : Gtk.Window
         }
 	}
 
+    /// <summary>
+    /// Load registry file.
+    /// </summary>
+    /// <param name="sender">Sender.</param>
+    /// <param name="e">E.</param>
 	protected void OnLoad(object sender, EventArgs e)
 	{
         Gtk.FileChooserDialog filechooser =
@@ -159,6 +194,11 @@ public partial class MainWindow : Gtk.Window
         filechooser.Destroy();
 	}
 
+    /// <summary>
+    /// Ons the about.
+    /// </summary>
+    /// <param name="sender">Sender.</param>
+    /// <param name="e">E.</param>
 	protected void OnAbout(object sender, EventArgs e)
 	{
 	}

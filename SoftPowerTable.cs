@@ -20,7 +20,7 @@ namespace Vega64SoftPowerTableEditor
         // ATOM Structs
         //
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public struct ATOM_COMMON_TABLE_HEADER
+		public class ATOM_COMMON_TABLE_HEADER
 		{
 			Int16 usStructureSize;
 			Byte ucTableFormatRevision;
@@ -28,8 +28,10 @@ namespace Vega64SoftPowerTableEditor
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_POWERPLAY_TABLE
+		public unsafe class ATOM_POWERPLAY_TABLE
 		{
+            public ATOM_POWERPLAY_TABLE() {
+            }
 			public ATOM_COMMON_TABLE_HEADER sHeader;
 			UCHAR ucTableRevision;
 			USHORT usTableSize;                        /* the size of header structure */
@@ -74,7 +76,7 @@ namespace Vega64SoftPowerTableEditor
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_State
+		public unsafe class ATOM_Vega10_State
 		{
 			UCHAR ucSocClockIndexHigh;
 			UCHAR ucSocClockIndexLow;
@@ -88,61 +90,63 @@ namespace Vega64SoftPowerTableEditor
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_State_Array
+		public unsafe class ATOM_Vega10_State_Array
 		{
 			public UCHAR ucRevId;
 			public UCHAR ucNumEntries;                                         /* Number of entries. */
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_GFXCLK_Dependency_Table
+		public unsafe class ATOM_Vega10_GFXCLK_Dependency_Table
 		{
 			public UCHAR ucRevId;
 			public UCHAR ucNumEntries;                                         /* Number of entries. */
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_GFXCLK_Dependency_Record
+		public unsafe class ATOM_Vega10_GFXCLK_Dependency_Record
 		{
 			public ULONG ulClk;                                               /* Clock Frequency */
 			public UCHAR ucVddInd;                                            /* SOC_VDD index */
 			public USHORT usCKSVOffsetandDisable;                              /* Bits 0~30: Voltage offset for CKS, Bit 31: Disable/enable for the GFXCLK level. */
 			public USHORT usAVFSOffset;                                        /* AVFS Voltage offset */
 			public UCHAR ucACGEnable;
-			public fixed UCHAR ucReserved[3];
+			public UCHAR ucReserved1;
+            public UCHAR ucReserved2;
+            public UCHAR ucReserved3;
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_MCLK_Dependency_Table
+		public unsafe class ATOM_Vega10_MCLK_Dependency_Table
 		{
-		public UCHAR ucRevId;
-		public UCHAR ucNumEntries;                                         /* Number of entries. */
+    		public UCHAR ucRevId;
+    		public UCHAR ucNumEntries;                                         /* Number of entries. */
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_MCLK_Dependency_Record
+		public unsafe class ATOM_Vega10_MCLK_Dependency_Record
 		{
-		public ULONG ulMemClk;                                            /* Clock Frequency */
-		public UCHAR ucVddInd;                                            /* SOC_VDD index */
-		public UCHAR ucVddMemInd;                                         /* MEM_VDD - only non zero for MCLK record */
-		public UCHAR ucVddciInd;                                          /* VDDCI   = only non zero for MCLK record */
+    		public ULONG ulMemClk;                                            /* Clock Frequency */
+    		public UCHAR ucVddInd;                                            /* SOC_VDD index */
+    		public UCHAR ucVddMemInd;                                         /* MEM_VDD - only non zero for MCLK record */
+    		public UCHAR ucVddciInd;                                          /* VDDCI   = only non zero for MCLK record */
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_Voltage_Lookup_Record
+		public unsafe class ATOM_Vega10_Voltage_Lookup_Record
 		{
 			public USHORT usVdd;                                               /* Base voltage */
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_Voltage_Lookup_Table
+		public unsafe class ATOM_Vega10_Voltage_Lookup_Table
 		{
 			public UCHAR ucRevId;
 			public UCHAR ucNumEntries;                                          /* Number of entries */
 		};
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public unsafe struct ATOM_Vega10_Fan_Table
+		public unsafe class ATOM_Vega10_Fan_Table
 		{
             public UCHAR ucRevId;
             public USHORT usFanOutputSensitivity;
@@ -167,7 +171,7 @@ namespace Vega64SoftPowerTableEditor
 		};
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public unsafe struct ATOM_Vega10_PowerTune_Table_V3
+        public unsafe class ATOM_Vega10_PowerTune_Table_V3
         {
             public UCHAR ucRevId;
             public USHORT usSocketPowerLimit;
@@ -195,7 +199,8 @@ namespace Vega64SoftPowerTableEditor
             public USHORT usBoostStartTemperature;
             public USHORT usBoostStopTemperature;
             public ULONG ulBoostClock;
-            public fixed ULONG Reserve[2];
+            public ULONG Reserve0;
+            public ULONG Reserve1;
         };
 
         //
@@ -424,6 +429,15 @@ namespace Vega64SoftPowerTableEditor
             return arr;
         }
 
+        /// <summary>
+        /// Construct template type
+        /// </summary>
+        /// <returns>The object.</returns>
+        /// <typeparam name="T">The 1st type parameter.</typeparam>
+        public static T GetObject<T>() {
+            return (T)Activator.CreateInstance(typeof(T));
+        }
+
 		/// <summary>
 		/// Marshal the data from byte array
 		/// </summary>
@@ -432,7 +446,7 @@ namespace Vega64SoftPowerTableEditor
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		static T FromBytes<T>(byte[] arr)
 		{
-			T obj = default(T);
+			T obj = GetObject<T>();
 			int size = Marshal.SizeOf(obj);
 			IntPtr ptr = Marshal.AllocHGlobal(size);
 			Marshal.Copy(arr, 0, ptr, size);
