@@ -319,15 +319,42 @@ namespace Vega64SoftPowerTableEditor
             byte[] data = this._originalData.ToArray();
 
             // start replacing bytes appropriately
+            // powerplay table
 			byte[] tmpBytes = GetBytes<ATOM_POWERPLAY_TABLE>(this.atom_powerplay_table);
 			Array.Copy(tmpBytes, 0, data, 0, tmpBytes.Length);
 
+            // gfx clock
 			tmpBytes = GetBytes<ATOM_Vega10_GFXCLK_Dependency_Table>(this.atom_vega10_gfxclk_table);
 			Array.Copy(tmpBytes, 0, data, this.atom_powerplay_table.usGfxclkDependencyTableOffset, tmpBytes.Length);
 
 			int offset = this.atom_powerplay_table.usGfxclkDependencyTableOffset + Marshal.SizeOf(this.atom_vega10_gfxclk_table);
             tmpBytes = ArrGetBytes<ATOM_Vega10_GFXCLK_Dependency_Record>(this.atom_vega10_gfxclk_entries);
             Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
+
+            // mem clock
+            offset = this.atom_powerplay_table.usMclkDependencyTableOffset + Marshal.SizeOf(this.atom_vega10_memclk_table);
+            tmpBytes = ArrGetBytes<ATOM_Vega10_MCLK_Dependency_Record>(this.atom_vega10_memclk_entries);
+            Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
+
+            // gfx vdd 
+            offset = this.atom_powerplay_table.usVddcLookupTableOffset + Marshal.SizeOf(this.atom_vega10_gfxvdd_table);
+            tmpBytes = ArrGetBytes<ATOM_Vega10_Voltage_Lookup_Record>(this.atom_vega10_gfxvdd_record);
+            Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
+
+            // mem vdd
+            offset = this.atom_powerplay_table.usVddmemLookupTableOffset + Marshal.SizeOf(this.atom_vega10_memvdd_table);
+            tmpBytes = ArrGetBytes<ATOM_Vega10_Voltage_Lookup_Record>(this.atom_vega10_memvdd_record);
+            Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
+
+            // powertune table
+            offset = this.atom_powerplay_table.usPowerTuneTableOffset;
+            tmpBytes = GetBytes<ATOM_Vega10_PowerTune_Table_V3>(this.atom_vega10_powertune_table);
+            Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
+
+            // fan table
+            offset = this.atom_powerplay_table.usFanTableOffset;
+			tmpBytes = GetBytes<ATOM_Vega10_Fan_Table>(this.atom_vega10_fan_table);
+			Array.Copy(tmpBytes, 0, data, offset, tmpBytes.Length);
 
             // dump out hex string
 			string hex = BitConverter.ToString(data).Replace("-", String.Empty);
