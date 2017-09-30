@@ -434,7 +434,8 @@ namespace Vega64SoftPowerTableEditor
         /// </summary>
         /// <returns>The object.</returns>
         /// <typeparam name="T">The 1st type parameter.</typeparam>
-        public static T GetObject<T>() {
+        public static T GetObject<T>()
+        {
             return (T)Activator.CreateInstance(typeof(T));
         }
 

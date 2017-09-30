@@ -39,6 +39,8 @@ public partial class MainWindow : Gtk.Window
     /// </summary>
     protected void setupWidgets() 
     {
+        this.ClearWidgets();
+
         this.populateSection("PowerPlay Table", this._spt.atom_powerplay_table, this.vbox_powerTable);
         this.populateSection("Fan Table", this._spt.atom_vega10_fan_table, this.vbox_powerTable);
 
@@ -65,6 +67,24 @@ public partial class MainWindow : Gtk.Window
 
         this.ShowAll();
     }      
+
+    /// <summary>
+    /// Clears the widgets.
+    /// </summary>
+    protected void ClearWidgets()
+    {
+        foreach (Gtk.Widget w in this.vbox_powerTable.Children) {
+            this.vbox_powerTable.Remove(w);
+        }
+
+        foreach (Gtk.Widget w in this.vbox_gfxclk.Children) {
+            this.vbox_gfxclk.Remove(w);
+        }
+
+        foreach (Gtk.Widget w in this.vbox_memclk.Children) {
+            this.vbox_memclk.Remove(w);
+        }
+    }
 
     /// <summary>
     /// Auto Generate Label and Entry edit widgets for each field in obj.
