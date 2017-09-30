@@ -40,9 +40,6 @@ If you find this useful consider [Donating](#donations)
  - Hellm @ http://www.overclock.net [Profile](http://www.overclock.net/u/511964/hellm)
  - If I missed anyone in the discovery of the SoftPowerTable trick let me know.
 
-# No Thanks
- - Anyone at https://bitcointalk.org who instead of sharing and helping demanded payments.
-
 # Donations
 
 Consider donating if you find this useful.  You can donate praise, a beer or if you are feeling generous some sweet sweet crypto:
