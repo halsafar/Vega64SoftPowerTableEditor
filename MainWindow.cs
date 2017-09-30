@@ -36,19 +36,21 @@ public partial class MainWindow : Gtk.Window
 
         foreach (Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_GFXCLK_Dependency_Record record in this._spt.atom_vega10_gfxclk_entries)
         {
-            this.populateSection("Gfx Clock", record, this.vbox_gfxclk);
+            this.populateSection("Gfx Clock " + record.ucVddInd, record, this.vbox_gfxclk);
         }
 
         foreach (Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_MCLK_Dependency_Record record in this._spt.atom_vega10_memclk_entries) {
-            this.populateSection("Mem Clock", record, this.vbox_gfxclk);
+            this.populateSection("Mem Clock " + record.ucVddInd, record, this.vbox_gfxclk);
         }
 
-        foreach (Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_Voltage_Lookup_Record record in this._spt.atom_vega10_gfxvdd_record) {
-            this.populateSection("Gfx Vdd", record, this.vbox_memclk);
+        for (int i = 0; i < this._spt.atom_vega10_gfxvdd_record.Count; i++) {
+            Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_Voltage_Lookup_Record record = this._spt.atom_vega10_gfxvdd_record[i];
+            this.populateSection("Gfx Vdd " + i, record, this.vbox_memclk);
         }
 
-        foreach (Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_Voltage_Lookup_Record record in this._spt.atom_vega10_memvdd_record) {
-            this.populateSection("Mem Vdd", record, this.vbox_memclk);
+        for (int i = 0; i< this._spt.atom_vega10_memvdd_record.Count; i++) {
+            Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_Voltage_Lookup_Record record = this._spt.atom_vega10_memvdd_record[i];
+			this.populateSection("Mem Vdd " + i, record, this.vbox_memclk);
         }
 
         this.ShowAll();

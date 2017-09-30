@@ -69,7 +69,7 @@ public partial class MainWindow
 		this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget("/menubar1")));
 		this.menubar1.Name = "menubar1";
 		this.vbox1.Add(this.menubar1);
-		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.menubar1]));
+		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.menubar1]));
 		w2.Position = 0;
 		w2.Expand = false;
 		w2.Fill = false;
@@ -82,6 +82,7 @@ public partial class MainWindow
 		w3.ShadowType = ((global::Gtk.ShadowType)(0));
 		// Container child GtkViewport.Gtk.Container+ContainerChild
 		this.table1 = new global::Gtk.Table(((uint)(1)), ((uint)(3)), true);
+		this.table1.Name = "table1";
 		this.table1.RowSpacing = ((uint)(6));
 		this.table1.ColumnSpacing = ((uint)(6));
 		// Container child table1.Gtk.Table+TableChild
@@ -89,7 +90,7 @@ public partial class MainWindow
 		this.vbox_gfxclk.Name = "vbox_gfxclk";
 		this.vbox_gfxclk.Spacing = 6;
 		this.table1.Add(this.vbox_gfxclk);
-		global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_gfxclk]));
+		global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.table1[this.vbox_gfxclk]));
 		w4.LeftAttach = ((uint)(1));
 		w4.RightAttach = ((uint)(2));
 		w4.YOptions = ((global::Gtk.AttachOptions)(4));
@@ -98,7 +99,7 @@ public partial class MainWindow
 		this.vbox_memclk.Name = "vbox_memclk";
 		this.vbox_memclk.Spacing = 6;
 		this.table1.Add(this.vbox_memclk);
-		global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_memclk]));
+		global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1[this.vbox_memclk]));
 		w5.LeftAttach = ((uint)(2));
 		w5.RightAttach = ((uint)(3));
 		w5.YOptions = ((global::Gtk.AttachOptions)(4));
@@ -107,16 +108,17 @@ public partial class MainWindow
 		this.vbox_powerTable.Name = "vbox_powerTable";
 		this.vbox_powerTable.Spacing = 6;
 		this.table1.Add(this.vbox_powerTable);
-		global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1 [this.vbox_powerTable]));
+		global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1[this.vbox_powerTable]));
 		w6.XOptions = ((global::Gtk.AttachOptions)(7));
 		w6.YOptions = ((global::Gtk.AttachOptions)(7));
 		w3.Add(this.table1);
 		this.GtkScrolledWindow.Add(w3);
 		this.vbox1.Add(this.GtkScrolledWindow);
-		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
+		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
 		w9.Position = 1;
 		this.Add(this.vbox1);
-		if ((this.Child != null)) {
+		if ((this.Child != null))
+		{
 			this.Child.ShowAll();
 		}
 		this.DefaultWidth = 1742;
