@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Gtk;
+
 
 class ClampedBindedEntry: Gtk.Entry
 {
@@ -111,27 +110,32 @@ public partial class MainWindow : Gtk.Window
             HBox hbox = new HBox(true, 0);
 
             Label l = new Label();
-            Entry e = new ClampedBindedEntry(field, field.FieldType);
+            Entry e = new Entry(); //new ClampedBindedEntry(field, field.FieldType);
 
             l.Text = field.Name;
-            l.ModifyFont(Pango.FontDescription.FromString("Courier 10"));
+            l.ModifyFont(Pango.FontDescription.FromString("Sans 10"));
             e.Text = field_value;
-            e.ModifyFont(Pango.FontDescription.FromString("Courier 10"));
+            e.ModifyFont(Pango.FontDescription.FromString("Sans 10"));
 
             e.Changed += delegate {
                 // Delegate clamps value and assigns it, some python-esque c#
                 string newValue = e.Text;
 
                 var maxValueField = field.FieldType.GetField("MaxValue");
+                var minValueField = field.FieldType.GetField("MinValue");
                 var converter = System.ComponentModel.TypeDescriptor.GetConverter(field.FieldType);
 
                 try {
                     var v = converter.ConvertFrom(newValue);
                     field.SetValueDirect(__makeref(obj), v);
                 } catch (System.Exception) {
-                    if (maxValueField != null) {
-                        var maxValue = maxValueField.GetValue(null);
-                        e.Text = maxValue.ToString();
+                    if (newValue.Length == 0 && minValueField != null) {
+                        var v = minValueField.GetValue(null);
+                        e.Text = v.ToString();
+                    }
+                    else if (maxValueField != null) {
+                        var v = maxValueField.GetValue(null);
+                        e.Text = v.ToString();
                     }
                 }
             };
