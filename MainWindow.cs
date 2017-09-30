@@ -92,7 +92,7 @@ public partial class MainWindow : Gtk.Window
 
                 try {
                     var v = converter.ConvertFrom(newValue);
-                    field.SetValueDirect(__makeref(this._spt.atom_powerplay_table), v);
+                    field.SetValueDirect(__makeref(obj), v);
                 } catch (System.Exception) {
                     if (maxValueField != null) {
                         var maxValue = maxValueField.GetValue(null);
