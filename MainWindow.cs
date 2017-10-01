@@ -59,7 +59,7 @@ public partial class MainWindow : Gtk.Window
 
         for (int i = 0; i< this._spt.atom_vega10_memvdd_record.Count; i++) {
             Vega64SoftPowerTableEditor.SoftPowerTable.ATOM_Vega10_Voltage_Lookup_Record record = this._spt.atom_vega10_memvdd_record[i];
-			this.populateSection("Mem Vdd " + i, record, this.vbox_memclk);
+            this.populateSection("Mem Vdd " + i, record, this.vbox_memclk);
         }
 
         this.populateSection("Power Tune Table", this._spt.atom_vega10_powertune_table, this.vbox_memclk);
@@ -167,18 +167,18 @@ public partial class MainWindow : Gtk.Window
     /// </summary>
     /// <param name="sender">Sender.</param>
     /// <param name="e">E.</param>
-	protected void OnExit(object sender, EventArgs e)
-	{
-		Application.Quit();
-	}
+    protected void OnExit(object sender, EventArgs e)
+    {
+        Application.Quit();
+    }
 
     /// <summary>
     /// Always treat as Save As for now.
     /// </summary>
     /// <param name="sender">Sender.</param>
     /// <param name="e">E.</param>
-	protected void OnSave(object sender, EventArgs e)
-	{
+    protected void OnSave(object sender, EventArgs e)
+    {
         if (this._spt != null)
         {
             Gtk.FileChooserDialog filechooser = 
@@ -194,21 +194,21 @@ public partial class MainWindow : Gtk.Window
 
             filechooser.Destroy();
         }
-	}
+    }
 
     /// <summary>
     /// Load registry file.
     /// </summary>
     /// <param name="sender">Sender.</param>
     /// <param name="e">E.</param>
-	protected void OnLoad(object sender, EventArgs e)
-	{
+    protected void OnLoad(object sender, EventArgs e)
+    {
         Gtk.FileChooserDialog filechooser =
-        		new Gtk.FileChooserDialog("Choose the file to open",
-        			this,
-        			FileChooserAction.Open,
-        			"Cancel", ResponseType.Cancel,
-        			"Open", ResponseType.Accept);
+                new Gtk.FileChooserDialog("Choose the file to open",
+                    this,
+                    FileChooserAction.Open,
+                    "Cancel", ResponseType.Cancel,
+                    "Open", ResponseType.Accept);
         if (filechooser.Run() == (int)ResponseType.Accept) 
         {
             this._spt = Vega64SoftPowerTableEditor.SoftPowerTable.OpenRegFile(filechooser.Filename);
@@ -216,14 +216,14 @@ public partial class MainWindow : Gtk.Window
         }
 
         filechooser.Destroy();
-	}
+    }
 
     /// <summary>
     /// Ons the about.
     /// </summary>
     /// <param name="sender">Sender.</param>
     /// <param name="e">E.</param>
-	protected void OnAbout(object sender, EventArgs e)
-	{
-	}
+    protected void OnAbout(object sender, EventArgs e)
+    {
+    }
 }
