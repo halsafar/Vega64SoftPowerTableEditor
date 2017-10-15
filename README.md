@@ -36,6 +36,9 @@ If you find this useful consider [Donating](#donations)
  - Open Wattman
  - Hit reset, apply, set voltage to manual, apply.
 
+# Compiling From Source
+ - The easiest way to compile from source is to download Xamarin Studio and open the project.
+
 # Thanks
  - Hellm @ http://www.overclock.net [Profile](http://www.overclock.net/u/511964/hellm)
  - If I missed anyone in the discovery of the SoftPowerTable trick let me know.
